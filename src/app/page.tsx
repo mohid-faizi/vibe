@@ -1,13 +1,18 @@
-import { caller } from "@/trpc/server";
+"use client";
 
-export default async function Home() {
-  const data = await caller.hello({
-    text: "world",
-  });
+import { useTRPC } from "@/trpc/client";
+import { useMutation } from "@tanstack/react-query";
+
+
+export default function Home() {
+  const trpc = useTRPC();
+  const invoke = useMutation(trpc.inngest.mutationOptions());
 
   return (
     <>
-      <div>{data.greeting}</div>
+      <div>
+        <button onClick={() => invoke.mutate({ text: "world" })}>Invoke</button>
+      </div>
     </>
   );
 }
